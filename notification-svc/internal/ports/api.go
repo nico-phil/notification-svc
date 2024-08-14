@@ -7,5 +7,5 @@ import (
 )
 
 type APIPort interface {
-	SendNotification(context.Context, domain.Notification) bool
+	SendPushNotification(context.Context, domain.Notification) bool
 }
