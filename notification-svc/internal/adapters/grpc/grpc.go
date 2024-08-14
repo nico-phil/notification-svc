@@ -10,6 +10,6 @@ import (
 func(a Adapter) Send(ctx context.Context, request *notifs.SendNotificationsRequest)(*notifs.SendNotificationsResponse, error){
 	message := domain.NewNotification("Your driver is comming","The Good seat","123","PUSH", "devicetoken", "IOS" )
 	
-	r := a.api.SendPushNotification(ctx, message)
-	return &notifs.SendNotificationsResponse{Send: r}, nil	
+	a.api.SendPushNotification(ctx, message)
+	return &notifs.SendNotificationsResponse{Send: true}, nil	
 }
