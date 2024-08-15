@@ -32,7 +32,7 @@ func (a *Adapter) PushMessageToQueue(topic string, message domain.Notification) 
 		Value: message,
 	}
 
-	defer a.producer.Close()
+	// defer a.producer.Close()
 
 	partition, offset, err:= a.producer.SendMessage(msg)
 	if err != nil {

@@ -9,16 +9,18 @@ import (
 
 func main(){
 
-	consumerAdapter, err := consumer.NewAdapter([]string{"localhost:9092"})
+	
+	fcmAdapter := &fcm.Adapter{}
+
+	err := fcmAdapter.GenerateToken()
+	if err != nil {
+		log.Printf("failed generating google cloud patform access token : %v", err)
+	}
+
+	consumerAdapter, err := consumer.NewAdapter(fcmAdapter, []string{"localhost:9092"})
 
 	if err != nil {
 		log.Fatalf("failed to connect to kafka broker err: %v", err)
-	}
-
-	fcmAdapter := &fcm.Adapter{}
-	err = fcmAdapter.GenerateToken()
-	if err != nil {
-		log.Printf("failed generating google cloud patform access token : %v", err)
 	}
 
 	consumerAdapter.ConsumeMessageFromQueue()

@@ -53,7 +53,7 @@ type Notification struct {
 	Body string `json:"body"`
 }
 
-func(a *Adapter) SendRequestToFireBase(title, body, token string){
+func(a *Adapter) SendNotification(title, body, token string){
 	url := fmt.Sprintf("https://fcm.googleapis.com/v1/projects/%s/messages:send", os.Getenv("FIREBASE_PROJECT_ID"))
 
 	data := MessagePayload {

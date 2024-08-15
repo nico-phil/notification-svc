@@ -1,20 +1,38 @@
 package consumer
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/IBM/sarama"
+	"github.com/nico-phil/notification_worker/internal/ports"
 )
 
 type Adapter struct {
 	consumer sarama.Consumer
 	Topic string
+	FCM ports.FCMPort
+
 }
 
-func NewAdapter(brokers []string) (*Adapter, error) {
+type Notification struct {
+	Content string `json:"content"`
+	From string `json:"from"`
+	To string `json:"to"`
+	NotifType string `json:"notif_type"`
+	Device Device `json:"device"`
+
+}
+
+type Device struct{
+	DeviceToken string `json:"device_token"`
+	DeviceType string 	`json:"device_type"`
+}
+
+func NewAdapter(fcmPort ports.FCMPort, brokers []string) (*Adapter, error) {
 	config := sarama.NewConfig()
 	config.Consumer.Return.Errors = true
 
@@ -23,7 +41,7 @@ func NewAdapter(brokers []string) (*Adapter, error) {
 		return nil, err
 	}
 	
-	return &Adapter{consumer: consumer, Topic: "ANDROID_QUEUE" }, nil
+	return &Adapter{consumer: consumer, Topic: "ANDROID_QUEUE", FCM: fcmPort }, nil
 }
 
 func(a Adapter) ConsumeMessageFromQueue() error{
@@ -51,7 +69,14 @@ func(a Adapter) ConsumeMessageFromQueue() error{
 				fmt.Println(err)
 			case msg := <-partitionConsumer.Messages():
 				msgCnt++
-				fmt.Printf("Received Notification Count %d: | Topic(%s) | Message(%s) \n", msgCnt, string(msg.Topic), string(msg.Value))
+				value := msg.Value
+				var notification Notification
+				err := json.Unmarshal(value, &notification)
+				if err != nil {
+					fmt.Println("failed unmarshaling data", err)
+				}
+				a.FCM.SendNotification(notification.From, notification.Content, notification.Device.DeviceToken)
+				fmt.Printf("Received Notification Count %d: | Topic(%s) | Message(%s) \n", msgCnt, string(msg.Topic), notification.Content)
 			case <-sigchan:
 				fmt.Println("Interrupt is detected")
 				doneCh <- struct{}{}
@@ -66,6 +91,9 @@ func(a Adapter) ConsumeMessageFromQueue() error{
 
 	return nil
 }
+
+
+
 
 
 

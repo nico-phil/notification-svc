@@ -1,5 +1,5 @@
 package ports
 
 type FCMPort interface {
-	GenerateToken()
+	SendNotification(title, body, token string)
 }
