@@ -60,7 +60,6 @@ func(a Adapter) ConsumeMessageFromQueue() error{
 	}()
 
 	<-doneCh
-	fmt.Println("Processed", msgCnt, "messages")
 	ts, _ := a.consumer.Topics()
 	fmt.Println("total topics:", ts)
 
