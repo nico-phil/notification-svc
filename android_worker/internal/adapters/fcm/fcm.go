@@ -1,7 +1,10 @@
 package fcm
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -10,7 +13,7 @@ import (
 
 type Adapter struct {
 	AccessToken string
-	Client *http.Client
+	Client http.Client
 }
 
 func(a *Adapter) GenerateToken() error {
@@ -36,39 +39,53 @@ func(a *Adapter) GenerateToken() error {
 	return nil
 }
 
-// func(a *Adapter) SendRequestToFireBase(){
-// 	url := ""
+type MessagePayload struct {
+	Message Message `json:"message"`
+}
 
-// 	data := map[string]any {
-// 		"message": map[string]any {
-// 			"token": a.AccessToken,
-// 			"notification": map[string] string {
-// 				"title": "hello world",
-// 				"body": "This is an FCM notification message",
-// 			},
-// 		},
-		
-// 	}
+type Message struct {
+	Token string `json:"token"`
+	Notification Notification `json:"notification"`
+}
 
-// 	jsonData, err := json.Marshal(data)
-// 	if err != nil {
-// 		fmt.Println("error marshaling data", err)
-// 	}
+type Notification struct {
+	Title string `json:"title"`
+	Body string `json:"body"`
+}
 
-// 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-// 	if err!= nil {
-// 		fmt.Println("error creating request", err)
-// 	}
+func(a *Adapter) SendRequestToFireBase(title, body, token string){
+	url := fmt.Sprintf("https://fcm.googleapis.com/v1/projects/%s/messages:send", os.Getenv("FIREBASE_PROJECT_ID"))
 
-// 	req.Header.Set("Content-Type", "application/json")
+	data := MessagePayload {
+		Message: Message{
+			Token: token,
+			Notification: Notification{
+				Title: title,
+				Body:  body,
+			},
+		},
+	}
+
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println("error marshaling data", err)
+	}
+
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
+	if err!= nil {
+		fmt.Println("error creating request", err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", a.AccessToken) )
 
 
-// 	_, err = a.Client.Do(req)
-// 	if err != nil {
-// 		fmt.Println("error making the request", err)
-// 	}
-// 	fmt.Println("all good")
-// }
+	_, err = a.Client.Do(req)
+	if err != nil {
+		fmt.Println("error making the request", err)
+	}
+	fmt.Println("all good")
+}
 
 
 
