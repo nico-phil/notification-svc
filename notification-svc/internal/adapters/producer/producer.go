@@ -21,7 +21,7 @@ func NewAdapter(brokers []string) (*Adapter, error){
 
 	producer, err := sarama.NewSyncProducer(brokers, config)
 	if err != nil {
-		return nil, fmt.Errorf("failed to connect to broker")
+		return nil, err
 	}
 	return &Adapter{producer: producer}, nil
 }
