@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/nico-phil/notification/config"
 	"github.com/nico-phil/notification/internal/adapters/db"
 	"github.com/nico-phil/notification/internal/adapters/grpc"
 	"github.com/nico-phil/notification/internal/adapters/producer"
@@ -16,6 +17,11 @@ func main(){
 		log.Fatalf("failed to connect to kafka err: %v", err)
 	}
 	dbAdapter := &db.DBModel{Devices: []db.DeviceEntity{}}
+	_, err  = db.NewAdapter(config.GetDbDSN())
+	if err != nil {
+		log.Fatal("cannot connect to db...")
+	}
+	log.Println("app succesffuly connect postgre")
 	application := api.NewApplication(producerAdapter, dbAdapter)
 
 	grpcAdapter := grpc.NewAdapter(application, 3000)
