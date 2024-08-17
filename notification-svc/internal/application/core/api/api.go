@@ -47,3 +47,8 @@ func(a *Application) GetDevice(ctx context.Context, id int64) (domain.Device, er
 	return device, nil
 }
 
+func(a *Application) SaveDevice(ctx context.Context, device *domain.Device) error {
+	return a.db.Save(ctx, device)
+}
+
+

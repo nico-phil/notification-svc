@@ -16,5 +16,7 @@ func(a Adapter) Send(ctx context.Context, request *notifs.SendNotificationsReque
 	message := domain.NewPushNotification("Hello Friend", "Gretting",  device)
 	
 	a.api.SendPushNotification(ctx, message)
+
+	
 	return &notifs.SendNotificationsResponse{Send: true}, nil	
 }

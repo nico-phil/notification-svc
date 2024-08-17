@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 	"github.com/nico-phil/notification/internal/application/core/domain"
@@ -35,3 +36,18 @@ func NewAdapter(dsn string) (*Adapter, error){
 
 	return &Adapter{db: db}, nil
 }
+
+func(a *Adapter) Save(ctx context.Context, device *domain.Device) error {
+	query := `
+		INSERT INTO devices(deviceToken, deviceType)
+		VALUES($1, $2)
+		RETURNING id
+	`
+	args := []any{device.DeviceToken, device.DeviceType}
+	fmt.Println(device)
+	return a.db.QueryRowContext(ctx, query, args...).Scan(&device.ID)
+}
+
+func(a *Adapter) Get(ctx context.Context, id int64)(domain.Device, error){
+	return domain.Device{}, nil
+}	

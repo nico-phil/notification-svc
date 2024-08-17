@@ -16,8 +16,8 @@ func main(){
 	if err != nil {
 		log.Fatalf("failed to connect to kafka err: %v", err)
 	}
-	dbAdapter := &db.DBModel{Devices: []db.DeviceEntity{}}
-	_, err  = db.NewAdapter(config.GetDbDSN())
+	
+	dbAdapter, err := db.NewAdapter(config.GetDbDSN())
 	if err != nil {
 		log.Fatal("cannot connect to db...")
 	}

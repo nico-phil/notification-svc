@@ -8,4 +8,5 @@ import (
 
 type DBPort interface {
 	Get(context.Context, int64) (domain.Device, error)
+	Save(context.Context, *domain.Device) error
 }
