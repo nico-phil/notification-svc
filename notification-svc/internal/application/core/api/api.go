@@ -41,7 +41,7 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 func(a *Application) GetDevice(ctx context.Context, id int64) (domain.Device, error){
 	device, err := a.db.Get(ctx, id)
 	if err != nil {
-		return domain.Device{}, err
+		return device, err
 	}
 
 	return device, nil

@@ -49,5 +49,19 @@ func(a *Adapter) Save(ctx context.Context, device *domain.Device) error {
 }
 
 func(a *Adapter) Get(ctx context.Context, id int64)(domain.Device, error){
-	return domain.Device{}, nil
+	var device domain.Device
+	query := `
+		SELECT * FROM devices
+		WHERE id=$1
+		`
+	args := []any{id}
+	err := a.db.QueryRowContext(ctx, query, args...).Scan(
+		&device.ID,
+		&device.DeviceToken,
+		&device.DeviceType,
+	)
+	if err != nil {
+		return domain.Device{}, err
+	}
+	return device, nil
 }	

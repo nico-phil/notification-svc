@@ -11,17 +11,17 @@ import (
 )
 
 func main(){
+	dbAdapter, err := db.NewAdapter(config.GetDbDSN())
+	if err != nil {
+		log.Fatal("cannot connect to db...")
+	}
+	log.Println("succesffuly connect to postgres")
 
 	producerAdapter, err := producer.NewAdapter([]string{"localhost:9092"})
 	if err != nil {
 		log.Fatalf("failed to connect to kafka err: %v", err)
 	}
 	
-	dbAdapter, err := db.NewAdapter(config.GetDbDSN())
-	if err != nil {
-		log.Fatal("cannot connect to db...")
-	}
-	log.Println("app succesffuly connect postgre")
 	application := api.NewApplication(producerAdapter, dbAdapter)
 
 	grpcAdapter := grpc.NewAdapter(application, 3000)

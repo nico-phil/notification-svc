@@ -10,10 +10,11 @@ import (
 func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRequest)(*notif.SendPushNotificationsResponse, error){
 
 	device, err := a.api.GetDevice(ctx, 1)
+	
 	if err != nil {
 		return &notif.SendPushNotificationsResponse{Sent: false}, err
 	}
-	pushNotification := domain.NewPushNotification("Hello Friend", "Gretting",  device)
+	pushNotification := domain.NewPushNotification(request.Content, request.Title,  device)
 	
 	a.api.SendPushNotification(ctx, pushNotification)
 
