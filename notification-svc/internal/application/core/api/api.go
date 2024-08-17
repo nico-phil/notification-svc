@@ -10,28 +10,27 @@ import (
 
 type Application struct {
 	producer ports.ProducerPort
+	db ports.DBPort
 }
 
-func NewApplication(kafkaAdapter ports.ProducerPort) *Application{
-	return &Application{producer: kafkaAdapter}
+func NewApplication(kafkaAdapter ports.ProducerPort, db ports.DBPort) *Application{
+	return &Application{producer: kafkaAdapter, db: db}
 }
 
-func(a *Application) SendPushNotification(ctx context.Context, notification domain.Notification) bool {
-	
-	deviceType := notification.Device.DeviceType
+func(a *Application) SendPushNotification(ctx context.Context, notification domain.PushNotification) bool {
 	var topic string
 
 	switch  {
-	case deviceType == "IOS":
+	case notification.Device.DeviceType == "IOS":
 		topic= "IOS_QUEUE"
-	case deviceType == "ANDROID":
+	case notification.Device.DeviceType == "ANDROID":
 		topic="ANDROID_QUEUE"
 	// case notifType == "SMS": 
 	// 	topic = "SMS_QUEUE"
 	// case notifType == "EMAIL":
 	// 	topic = "EMAIL_QUEUE"
 	default: 
-		log.Printf("unknown device or type: %s, %s", deviceType, notification.Device.DeviceToken)
+		log.Printf("unknown device type: %s", notification.Device.DeviceType)
 	
 	}
 	
@@ -39,4 +38,12 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 	return true
 }
 
+func(a *Application) GetDevice(ctx context.Context, id int64) (domain.Device, error){
+	device, err := a.db.Get(ctx, id)
+	if err != nil {
+		return domain.Device{}, err
+	}
+
+	return device, nil
+}
 

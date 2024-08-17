@@ -19,18 +19,21 @@ type Adapter struct {
 }
 
 type Notification struct {
+	Title string `json:"title"`
 	Content string `json:"content"`
-	From string `json:"from"`
-	To string `json:"to"`
-	NotifType string `json:"notif_type"`
-	Device Device `json:"device"`
-
 }
 
 type Device struct{
+	ID int	`json:"id"`
 	DeviceToken string `json:"device_token"`
 	DeviceType string 	`json:"device_type"`
 }
+
+type PushNotification struct {
+	Notification Notification 	`json:"notification"`
+	Device Device `json:"device"`
+}
+
 
 func NewAdapter(fcmPort ports.FCMPort, brokers []string) (*Adapter, error) {
 	config := sarama.NewConfig()
@@ -70,13 +73,13 @@ func(a Adapter) ConsumeMessageFromQueue() error{
 			case msg := <-partitionConsumer.Messages():
 				msgCnt++
 				value := msg.Value
-				var notification Notification
-				err := json.Unmarshal(value, &notification)
+				var pushNotification PushNotification
+				err := json.Unmarshal(value, &pushNotification)
 				if err != nil {
 					fmt.Println("failed unmarshaling data", err)
 				}
-				a.FCM.SendNotification(notification.From, notification.Content, notification.Device.DeviceToken)
-				fmt.Printf("Received Notification Count %d: | Topic(%s) | Message(%s) \n", msgCnt, string(msg.Topic), notification.Content)
+				a.FCM.SendNotification(pushNotification.Notification.Title, pushNotification.Notification.Content, pushNotification.Device.DeviceToken)
+				fmt.Printf("Received Notification Count %d: | Topic(%s) | Message(%s) \n", msgCnt, string(msg.Topic), pushNotification.Notification.Content)
 			case <-sigchan:
 				fmt.Println("Interrupt is detected")
 				doneCh <- struct{}{}

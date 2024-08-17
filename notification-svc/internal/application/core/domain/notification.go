@@ -4,34 +4,33 @@ import "encoding/json"
 
 
 type Notification struct {
+	Title string `json:"title"`
 	Content string `json:"content"`
-	From string `json:"from"`
-	To string `json:"to"`
-	NotifType string `json:"notif_type"`
-	Device Device `json:"device"`
-
 }
 
 type Device struct{
+	ID int	`json:"id"`
 	DeviceToken string `json:"device_token"`
 	DeviceType string 	`json:"device_type"`
 }
 
-func NewNotification(content, from, to, notifType, deviceToken, deviceType string) Notification {
-	return Notification {
-		Content: content,
-		From: from,
-		To: to,
-		NotifType: "PUSH",
-		Device: Device{DeviceToken: deviceToken, DeviceType: deviceType},
+type PushNotification struct {
+	Notification Notification 	`json:"notification"`
+	Device Device `json:"device"`
+}
+
+func NewPushNotification(content, title string, device Device) PushNotification {
+	return PushNotification {
+		Notification: Notification{Content: content, Title: title},
+		Device: device,
 	}
 }
 
-func(n Notification) Encode()([]byte, error) {
+func(n PushNotification) Encode()([]byte, error) {
 	return json.Marshal(n)
 }
 
-func (n Notification) Length() int{
+func (n PushNotification) Length() int{
 	encode, _ := n.Encode()
 	return len(encode)
 }

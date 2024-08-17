@@ -26,11 +26,13 @@ func NewAdapter(brokers []string) (*Adapter, error){
 	return &Adapter{producer: producer}, nil
 }
 
-func (a *Adapter) PushMessageToQueue(topic string, message domain.Notification) error {
+func (a *Adapter) PushMessageToQueue(topic string, message domain.PushNotification) error {
 	msg := &sarama.ProducerMessage{
 		Topic: topic,
 		Value: message,
 	}
+
+	fmt.Println(message)
 
 	// defer a.producer.Close()
 
