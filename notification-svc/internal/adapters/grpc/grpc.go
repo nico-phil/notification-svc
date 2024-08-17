@@ -13,10 +13,11 @@ func(a Adapter) Send(ctx context.Context, request *notifs.SendNotificationsReque
 	if err != nil {
 		return &notifs.SendNotificationsResponse{Send: false}, err
 	}
-	message := domain.NewPushNotification("Hello Friend", "Gretting",  device)
+	pushNotification := domain.NewPushNotification("Hello Friend", "Gretting",  device)
 	
-	a.api.SendPushNotification(ctx, message)
+	a.api.SendPushNotification(ctx, pushNotification)
 
 	
 	return &notifs.SendNotificationsResponse{Send: true}, nil	
 }
+
