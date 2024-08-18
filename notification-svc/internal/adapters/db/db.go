@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	_ "github.com/lib/pq"
 	"github.com/nico-phil/notification/internal/application/core/domain"
@@ -44,7 +43,6 @@ func(a *Adapter) Save(ctx context.Context, device *domain.Device) error {
 		RETURNING id
 	`
 	args := []any{device.DeviceToken, device.DeviceType}
-	fmt.Println(device)
 	return a.db.QueryRowContext(ctx, query, args...).Scan(&device.ID)
 }
 

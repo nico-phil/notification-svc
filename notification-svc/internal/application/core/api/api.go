@@ -34,8 +34,8 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 	
 	}
 	
-	a.producer.PushMessageToQueue(topic, notification)
-	return true
+	err := a.producer.PushMessageToQueue(topic, notification)
+	return err != nil
 }
 
 func(a *Application) GetDevice(ctx context.Context, id int64) (domain.Device, error){

@@ -26,9 +26,9 @@ func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRe
 	
 	pushNotification := domain.NewPushNotification(request.Content, request.Title,  device)
 	
-	a.api.SendPushNotification(ctx, pushNotification)
+	r := a.api.SendPushNotification(ctx, pushNotification)
 
 	
-	return &notif.SendPushNotificationsResponse{Sent: true}, nil	
+	return &notif.SendPushNotificationsResponse{Sent: r}, nil	
 }
 
