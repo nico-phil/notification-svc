@@ -9,7 +9,6 @@ import (
 
 func main(){
 
-	
 	fcmAdapter := &fcm.Adapter{}
 
 	err := fcmAdapter.GenerateToken()
