@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	_ "github.com/lib/pq"
 	"github.com/nico-phil/notification/internal/application/core/domain"
@@ -59,6 +60,9 @@ func(a *Adapter) Get(ctx context.Context, id int64)(domain.Device, error){
 		&device.DeviceType,
 	)
 	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return domain.Device{}, errors.New("device not found")
+		}
 		return domain.Device{}, err
 	}
 	return device, nil

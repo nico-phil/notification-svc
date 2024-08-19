@@ -19,7 +19,7 @@ require (
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/lib/pq v1.10.9 // indirect
-	github.com/nico-phil/notification-proto/golang/notification v1.0.5 // indirect
+	github.com/nico-phil/notification-proto/golang/notification v1.0.8 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	golang.org/x/crypto v0.26.0 // indirect

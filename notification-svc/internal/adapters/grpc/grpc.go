@@ -29,10 +29,10 @@ func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRe
 		})
 	}
 
-	if len(request.DeviceId) == 0 {
+	if request.DeviceId < 1 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
 			Field: "title",
-			Description: "device id cannot be negative",
+			Description: "device id cannot be less than 1",
 		})
 	}
 
@@ -46,13 +46,13 @@ func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRe
 
 	var device domain.Device
 	var err error
-	device, ok := deviceCahe[1]
+	device, ok := deviceCahe[request.DeviceId]
 	if !ok {
-		device, err = a.api.GetDevice(ctx, 1)
+		device, err = a.api.GetDevice(ctx, request.DeviceId)
 	}
 
 	if err != nil {
-		return &notif.SendPushNotificationsResponse{Sent: false}, err
+		return nil, status.Error(codes.NotFound, err.Error())
 	}
 	
 	deviceCahe[int64(device.ID)] = device
