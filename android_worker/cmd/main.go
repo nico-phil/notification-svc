@@ -13,7 +13,7 @@ func main(){
 
 	err := fcmAdapter.GenerateToken()
 	if err != nil {
-		log.Printf("failed generating google cloud patform access token : %v", err)
+		log.Fatalf("failed to generate google cloud patform access token : %v", err)
 	}
 
 	consumerAdapter, err := consumer.NewAdapter(fcmAdapter, []string{"localhost:9092"})

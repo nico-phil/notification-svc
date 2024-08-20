@@ -53,7 +53,7 @@ type Notification struct {
 	Body string `json:"body"`
 }
 
-func(a *Adapter) SendNotification(title, body, token string){
+func(a *Adapter) SendNotification(title, body, token string) error{
 	url := fmt.Sprintf("https://fcm.googleapis.com/v1/projects/%s/messages:send", os.Getenv("FIREBASE_PROJECT_ID"))
 
 	data := MessagePayload {
@@ -68,12 +68,12 @@ func(a *Adapter) SendNotification(title, body, token string){
 
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println("error marshaling data", err)
+		return err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
 	if err!= nil {
-		fmt.Println("error creating request", err)
+		return err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -82,9 +82,9 @@ func(a *Adapter) SendNotification(title, body, token string){
 
 	_, err = a.Client.Do(req)
 	if err != nil {
-		fmt.Println("error making the request", err)
+		return err
 	}
-	fmt.Println("all good")
+	return nil
 }
 
 

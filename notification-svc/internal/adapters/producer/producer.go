@@ -34,7 +34,12 @@ func (a *Adapter) PushMessageToQueue(topic string, message domain.PushNotificati
 
 	fmt.Println(message)
 
-	// defer a.producer.Close()
+	// defer func(){
+	// 	err :=  a.producer.Close()
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }()
 
 	partition, offset, err:= a.producer.SendMessage(msg)
 	if err != nil {

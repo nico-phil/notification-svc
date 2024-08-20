@@ -15,7 +15,7 @@ var deviceCahe map[int64]domain.Device = make(map[int64]domain.Device)
 func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRequest)(*notif.SendPushNotificationsResponse, error){
 
 	var validationErrors []*errdetails.BadRequest_FieldViolation
-	if len(request.Title) == 0 {
+	if  len(request.Title) == 0 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
 			Field: "title",
 			Description: "title cannot be empty",
