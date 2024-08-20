@@ -1,7 +1,6 @@
 package consumer
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -10,13 +9,13 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/nico-phil/notification_worker/internal/ports"
+	"github.com/nico-phil/email_worker/internal/ports"
 )
 
 type Adapter struct {
 	consumer sarama.Consumer
 	Topic string
-	FCM ports.FCMPort
+	Mail ports.MailPort
 
 }
 
@@ -37,7 +36,7 @@ type PushNotification struct {
 }
 
 
-func NewAdapter(fcmPort ports.FCMPort, brokers []string) (*Adapter, error) {
+func NewAdapter(mailPort ports.MailPort, brokers []string) (*Adapter, error) {
 	config := sarama.NewConfig()
 	config.Consumer.Return.Errors = true
 
@@ -46,7 +45,7 @@ func NewAdapter(fcmPort ports.FCMPort, brokers []string) (*Adapter, error) {
 		return nil, err
 	}
 	
-	return &Adapter{consumer: consumer, Topic: "ANDROID_QUEUE", FCM: fcmPort }, nil
+	return &Adapter{consumer: consumer, Topic: "EMAIL_QUEUE", Mail: mailPort }, nil
 }
 
 func(a Adapter) ConsumeMessageFromQueue(){
@@ -95,23 +94,23 @@ func(a Adapter) ConsumeMessageFromQueue(){
 
 
 func(a *Adapter) ProcessMessage(msg *sarama.ConsumerMessage){
-	value := msg.Value
+	// value := msg.Value
  
-	var pushNotification PushNotification
-	err := json.Unmarshal(value, &pushNotification)
-	if err != nil {
-		fmt.Println("failed unmarshaling data", err)
-	}
+	// var Payload Payload
+	// err := json.Unmarshal(value, &pushNotification)
+	// if err != nil {
+	// 	fmt.Println("failed unmarshaling data", err)
+	// }
 			
 	count := 3
 	for count > 0 {
-		err  = a.FCM.SendNotification(pushNotification.Notification.Title, pushNotification.Notification.Content, pushNotification.Device.DeviceToken)
+		err  := a.Mail.SendRequestToMailSender()
 		if err != nil {
 			count--
 			log.Println(err)
 			time.Sleep(2 * time.Second)
 		}else {
-			fmt.Println("suceess process notification", pushNotification.Notification.Content)
+			fmt.Println("suceess process notification", )
 			break;
 		}
 	} 
