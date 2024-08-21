@@ -32,7 +32,52 @@ func (a *Adapter) PushMessageToQueue(topic string, message domain.PushNotificati
 		Value: message,
 	}
 
-	fmt.Println(message)
+	// defer func(){
+	// 	err :=  a.producer.Close()
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }()
+
+	partition, offset, err:= a.producer.SendMessage(msg)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Notification is stored in topic (%s)/partition/(%d)/offset(%d)\n", topic, partition, offset)
+
+	return nil
+}
+
+func (a *Adapter) PushMessageToQueueEmail(topic string, message domain.EmailNotification) error {
+	msg := &sarama.ProducerMessage{
+		Topic: topic,
+		Value: message,
+	}
+
+	// defer func(){
+	// 	err :=  a.producer.Close()
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }()
+
+	partition, offset, err:= a.producer.SendMessage(msg)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Notification is stored in topic (%s)/partition/(%d)/offset(%d)\n", topic, partition, offset)
+
+	return nil
+}
+
+
+func (a *Adapter) PushMessageToQueueSMS(topic string, message domain.SMSNotification) error {
+	msg := &sarama.ProducerMessage{
+		Topic: topic,
+		Value: message,
+	}
 
 	// defer func(){
 	// 	err :=  a.producer.Close()

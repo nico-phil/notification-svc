@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	notifs "github.com/nico-phil/notification-proto/golang/notification"
+	"github.com/nico-phil/notification-proto/golang/notification/v2"
 	"github.com/nico-phil/notification/config"
 	"github.com/nico-phil/notification/internal/ports"
 	"google.golang.org/grpc"
@@ -17,7 +17,7 @@ type Adapter struct {
 	api ports.APIPort
 	server *grpc.Server
 	port int
-	notifs.UnimplementedNotificationServer
+	notification.UnimplementedNotificationServer
 }
 
 func NewAdapter(api ports.APIPort, port int) *Adapter {
@@ -36,7 +36,7 @@ func(a Adapter) Run(){
 
 	grpcServer := grpc.NewServer()
 	a.server = grpcServer
-	notifs.RegisterNotificationServer(grpcServer, a)
+	notification.RegisterNotificationServer(grpcServer, a)
 
 	if config.GetEnv() == "development" {
 		reflection.Register(grpcServer)

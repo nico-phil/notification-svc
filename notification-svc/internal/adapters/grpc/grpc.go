@@ -3,16 +3,14 @@ package grpc
 import (
 	"context"
 
-	notif "github.com/nico-phil/notification-proto/golang/notification"
+	"github.com/nico-phil/notification-proto/golang/notification/v2"
 	"github.com/nico-phil/notification/internal/application/core/domain"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-var deviceCahe map[int64]domain.Device = make(map[int64]domain.Device)
-
-func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRequest)(*notif.SendPushNotificationsResponse, error){
+func(a Adapter) Send(ctx context.Context, request *notification.SendNotificationRequest)(*notification.SendNotificationResponse, error){
 
 	var validationErrors []*errdetails.BadRequest_FieldViolation
 	if  len(request.Title) == 0 {
@@ -29,7 +27,7 @@ func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRe
 		})
 	}
 
-	if request.DeviceId < 1 {
+	if request.UserId < 1 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
 			Field: "title",
 			Description: "device id cannot be less than 1",
@@ -44,24 +42,18 @@ func(a Adapter) Push(ctx context.Context, request *notif.SendPushNotificationsRe
 		return nil, s.Err()
 	}
 
-	var device domain.Device
-	var err error
-	device, ok := deviceCahe[request.DeviceId]
-	if !ok {
-		device, err = a.api.GetDevice(ctx, request.DeviceId)
-	}
-
+	newNotification := domain.NewNotification(request.UserId, request.Title, request.Content, request.NotificationType)
+	
+	err := a.api.SendNotification(ctx, newNotification)
 	if err != nil {
-		return nil, status.Error(codes.NotFound, err.Error())
+		return nil, err
 	}
-	
-	deviceCahe[int64(device.ID)] = device
-	
-	pushNotification := domain.NewPushNotification(request.Content, request.Title,  device)
-	
-	r := a.api.SendPushNotification(ctx, pushNotification)
 
 	
-	return &notif.SendPushNotificationsResponse{Sent: r}, nil	
+	return &notification.SendNotificationResponse{Sent:true }, nil	
+}
+
+func (a Adapter) Email() {
+
 }
 

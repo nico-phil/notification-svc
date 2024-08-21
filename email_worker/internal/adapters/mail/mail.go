@@ -29,7 +29,7 @@ func(m *Mail) SendRequestToMailSender()error {
 	url := "https://api.mailersend.com/v1/email"
 
 	payload := Payload {
-		From: FromTo{Email: "Nico@trial-z3m5jgrrv6dgdpyo.mlsender.net"},
+		From: FromTo{Email: ""},
 		To: FromTo{Email: "nphilibert17@gmail.com"},
 		Subject: "Hello from Nico",
 		Text: "Greetings from the team, you got this message through MailerSend",
