@@ -12,7 +12,30 @@ import (
 
 func(a Adapter) Send(ctx context.Context, request *notification.SendNotificationRequest)(*notification.SendNotificationResponse, error){
 
+	validationErrors := ValidateInput(request)
+	
+	if len(validationErrors) > 0 {
+		stat := status.New(codes.InvalidArgument , "invalid push notification request" )
+		badRequest := &errdetails.BadRequest{}
+		badRequest.FieldViolations = validationErrors
+		s, _ := stat.WithDetails(badRequest)
+		return nil, s.Err()
+	}
+
+	newNotification := domain.NewNotification(request.UserId, request.Title, request.Content, request.NotificationType)
+	
+	err := a.api.SendNotification(ctx, newNotification)
+	if err != nil {
+		return nil, err
+	}
+
+	
+	return &notification.SendNotificationResponse{Sent:true }, nil	
+}
+
+func ValidateInput(request *notification.SendNotificationRequest) []*errdetails.BadRequest_FieldViolation {
 	var validationErrors []*errdetails.BadRequest_FieldViolation
+
 	if  len(request.Title) == 0 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
 			Field: "title",
@@ -33,27 +56,8 @@ func(a Adapter) Send(ctx context.Context, request *notification.SendNotification
 			Description: "device id cannot be less than 1",
 		})
 	}
-
-	if len(validationErrors) > 0 {
-		stat := status.New(codes.InvalidArgument , "invalid push notification request" )
-		badRequest := &errdetails.BadRequest{}
-		badRequest.FieldViolations = validationErrors
-		s, _ := stat.WithDetails(badRequest)
-		return nil, s.Err()
-	}
-
-	newNotification := domain.NewNotification(request.UserId, request.Title, request.Content, request.NotificationType)
-	
-	err := a.api.SendNotification(ctx, newNotification)
-	if err != nil {
-		return nil, err
-	}
-
-	
-	return &notification.SendNotificationResponse{Sent:true }, nil	
-}
-
-func (a Adapter) Email() {
+	return validationErrors
 
 }
+
 
