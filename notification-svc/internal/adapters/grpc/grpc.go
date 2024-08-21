@@ -50,6 +50,13 @@ func ValidateInput(request *notification.SendNotificationRequest) []*errdetails.
 		})
 	}
 
+	if len(request.NotificationType) == 0 {
+		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
+			Field: "notification_type",
+			Description: "notification_type cannot be empty",
+		})
+	}
+
 	if request.UserId < 1 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
 			Field: "title",
