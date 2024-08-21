@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/nico-phil/email_worker/config"
 	"github.com/nico-phil/email_worker/internal/adapters/consumer"
 	"github.com/nico-phil/email_worker/internal/adapters/mail"
 )
@@ -11,7 +12,7 @@ import (
 
 func main() {
 	mail := &mail.Mail{
-		API_TOKEN: "",
+		API_TOKEN: config.GetApiToken(),
 	}
 	consumerAdapter, err := consumer.NewAdapter(mail, []string{"localhost:9092"})
 

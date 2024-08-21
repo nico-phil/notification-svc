@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/nico-phil/email_worker/config"
 )
 
 type Mail struct {
@@ -29,7 +31,7 @@ func(m *Mail) SendRequestToMailSender()error {
 	url := "https://api.mailersend.com/v1/email"
 
 	payload := Payload {
-		From: FromTo{Email: ""},
+		From: FromTo{Email: config.GetDomain()},
 		To: FromTo{Email: "nphilibert17@gmail.com"},
 		Subject: "Hello from Nico",
 		Text: "Greetings from the team, you got this message through MailerSend",
