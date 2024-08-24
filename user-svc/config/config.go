@@ -9,6 +9,10 @@ func GetEnv() string{
 	return getEnvironmentVariable("ENV")
 }
 
+func GetDSN() string {
+	return getEnvironmentVariable("DSN")
+}
+
 
 func getEnvironmentVariable(key string) string {
 	v := os.Getenv(key)

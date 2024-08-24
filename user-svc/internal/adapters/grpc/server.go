@@ -36,7 +36,6 @@ func(a *Adapter) Run(){
 	a.server = grpcServer
 	user.RegisterUserServer(grpcServer, a)
 
-	// dev
 	if config.GetEnv() == "development"{
 		reflection.Register(grpcServer)
 	}

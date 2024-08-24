@@ -7,6 +7,6 @@ import (
 )
 
 type APIPort interface {
-	CreateUser(context.Context, domain.User)
-	CreateDevice(context.Context, domain.Device)
+	CreateUser(context.Context, *domain.User) error
+	CreateDevice(context.Context, *domain.Device) error
 }

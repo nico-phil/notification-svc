@@ -29,6 +29,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: devices
+      POSTGRES_DB: users
     # # volumes:
     # - da./db-data/postgres/:/var/lib/postgresql/ta/

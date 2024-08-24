@@ -12,6 +12,12 @@ type Application struct {
 	db ports.DBPort
 }
 
+func NewApplication(db ports.DBPort) *Application{
+	return &Application{
+		db: db,
+	}
+}
+
 func(a *Application) CreateUser(ctx context.Context,  user *domain.User) error {
 	err := a.db.SaveUser(ctx, user)
 	if err != nil {
