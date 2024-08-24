@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/nico-phil/notification/internal/application/core/domain"
 	"github.com/nico-phil/notification/internal/ports"
@@ -41,6 +42,9 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 		return err
 	}
 
+	fmt.Println("devicetype=", device.DeviceType)
+	fmt.Println("device=", device.DeviceType == "ANDROID")
+
 	var topic string
 
 	if device.DeviceType == "ANDROID" {
@@ -55,7 +59,7 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 }
 
 func(a *Application) SendEmailNotification(ctx context.Context, notification domain.Notification) error {
-	email := "yyyeenphilibert17@gmail.com"
+	email := "philibert17@gmail.com"
 
 	emailNotification := domain.EmailNotification {
 		Title: notification.Title,

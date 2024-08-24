@@ -1,6 +1,7 @@
 package consumer
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -19,22 +20,11 @@ type Adapter struct {
 
 }
 
-type Notification struct {
+type EmailNotification struct {
 	Title string `json:"title"`
 	Content string `json:"content"`
+	Email string `json:"email"`
 }
-
-type Device struct{
-	ID int	`json:"id"`
-	DeviceToken string `json:"device_token"`
-	DeviceType string 	`json:"device_type"`
-}
-
-type PushNotification struct {
-	Notification Notification 	`json:"notification"`
-	Device Device `json:"device"`
-}
-
 
 func NewAdapter(mailPort ports.MailPort, brokers []string) (*Adapter, error) {
 	config := sarama.NewConfig()
@@ -94,17 +84,17 @@ func(a Adapter) ConsumeMessageFromQueue(){
 
 
 func(a *Adapter) ProcessMessage(msg *sarama.ConsumerMessage){
-	// value := msg.Value
+	value := msg.Value
  
-	// var Payload Payload
-	// err := json.Unmarshal(value, &pushNotification)
-	// if err != nil {
-	// 	fmt.Println("failed unmarshaling data", err)
-	// }
+	var payload EmailNotification
+	err := json.Unmarshal(value, &payload)
+	if err != nil {
+		fmt.Println("failed to unmarshal data", err)
+	}
 			
 	count := 3
 	for count > 0 {
-		err  := a.Mail.SendRequestToMailSender()
+		err  := a.Mail.SendRequestToMailSender(payload.Title, payload.Content, payload.Email)
 		if err != nil {
 			count--
 			log.Println(err)

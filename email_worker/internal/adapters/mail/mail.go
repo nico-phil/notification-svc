@@ -27,15 +27,15 @@ type FromTo struct {
 }
 
 
-func(m *Mail) SendRequestToMailSender()error {
+func(m *Mail) SendRequestToMailSender(subject, text, email string)error {
 	url := "https://api.mailersend.com/v1/email"
 
 	payload := Payload {
 		From: FromTo{Email: config.GetDomain()},
-		To: FromTo{Email: "nphilibert17@gmail.com"},
-		Subject: "Hello from Nico",
-		Text: "Greetings from the team, you got this message through MailerSend",
-		Html: "Greetings from the team, you got this message through MailerSend",
+		To: FromTo{Email: config.GetEmail()},
+		Subject: subject,
+		Text: text,
+		Html: text,
 	}
 
 	data, err := json.Marshal(payload)
@@ -55,10 +55,11 @@ func(m *Mail) SendRequestToMailSender()error {
 	if err != nil {
 		return err
 	}
-
 	defer res.Body.Close()
 
-	fmt.Println("req status:",res.Status)
+	if res.StatusCode !=  http.StatusOK {
+		fmt.Println(res.Status)
+	}
 
 	return nil
 }

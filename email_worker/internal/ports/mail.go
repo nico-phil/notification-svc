@@ -1,5 +1,5 @@
 package ports
 
 type MailPort interface {
-	SendRequestToMailSender() error
+	SendRequestToMailSender(subject, text, emailTo string) error
 }

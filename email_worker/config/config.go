@@ -17,6 +17,10 @@ func GetApiToken() string {
 	return getEnvironmentvalue("API_TOKEN")
 }
 
+func GetEmail() string {
+	return getEnvironmentvalue("EMAIL")
+}
+
 func GetDbDSN() string{
 	return getEnvironmentvalue("DSN")
 }
