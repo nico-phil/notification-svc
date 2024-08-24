@@ -1,12 +1,16 @@
 package domain
 
+import (
+	"golang.org/x/crypto/bcrypt"
+)
+
 type User struct {
 	ID int64 `json:"id"`
 	Firstname string `json:"first_name"`
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
 	Password string `json:"password"`
-	HashPassword string `json:"HashPassword"`
+	HashPassword []byte `json:"HashPassword"`
 }
 
 type Device struct {
@@ -17,6 +21,10 @@ type Device struct {
 }
 
 func(u *User) EncriptPassword() error {
-
+	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
+	if err != nil{
+		return err
+	}
+	u.HashPassword = hash
 	return nil
 }

@@ -18,5 +18,5 @@ func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*u
 	if err != nil {
 		return  nil, err
 	}
-	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname,Email: newUser.Password }, nil
+	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname, Email: newUser.Email }, nil
 }

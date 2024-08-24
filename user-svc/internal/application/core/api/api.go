@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"log"
 
 	"github.com/nico-phil/notification/user-svc/internal/application/core/domain"
 	"github.com/nico-phil/notification/user-svc/internal/ports"
@@ -19,8 +20,13 @@ func NewApplication(db ports.DBPort) *Application{
 }
 
 func(a *Application) CreateUser(ctx context.Context,  user *domain.User) error {
+
+	err := user.EncriptPassword()
+	if err != nil{
+		log.Println("error hasing password", err)
+	}
 	
-	err := a.db.SaveUser(ctx, user)
+	err = a.db.SaveUser(ctx, user)
 	if err != nil {
 		return err
 	}
