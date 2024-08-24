@@ -6,6 +6,7 @@ type User struct {
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
 	Password string `json:"password"`
+	HashPassword string `json:"HashPassword"`
 }
 
 type Device struct {
@@ -13,4 +14,9 @@ type Device struct {
 	DeviceToken string `json:"device_token"`
 	DeviceType string `json:"device_type"`
 	UserID int64 `json:"user_id"`
+}
+
+func(u *User) EncriptPassword() error {
+
+	return nil
 }

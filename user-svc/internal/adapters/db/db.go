@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	_ "github.com/lib/pq"
 	"github.com/nico-phil/notification/user-svc/internal/application/core/domain"
 )
 

@@ -19,6 +19,7 @@ func NewApplication(db ports.DBPort) *Application{
 }
 
 func(a *Application) CreateUser(ctx context.Context,  user *domain.User) error {
+	
 	err := a.db.SaveUser(ctx, user)
 	if err != nil {
 		return err

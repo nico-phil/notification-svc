@@ -15,8 +15,9 @@ func main(){
 	if err != nil {
 		log.Fatalf("failed to connect to postgres %v", err)
 	}
+	log.Println("sucessfully connect to posgres")
 	application := api.NewApplication(dbAdapter)
-	
+
 	grpcAdapter := grpc.NewAdapter(application, 3001)
 
 	grpcAdapter.Run()

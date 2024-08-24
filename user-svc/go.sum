@@ -1,3 +1,5 @@
+github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
+github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/nico-phil/notification-proto/golang/user v1.0.0 h1:5dfz7KTH27zBlm+XO5Oo13bhUgZ5qZ42R24lqpnoL7U=
 github.com/nico-phil/notification-proto/golang/user v1.0.0/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
 github.com/nico-phil/notification-proto/golang/user v1.0.1 h1:QjH+JKPaIfC3ckAgnHyQ5WH5zEvdAQBROY6zz2daZxM=
