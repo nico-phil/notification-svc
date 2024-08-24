@@ -8,7 +8,6 @@ type User struct {
 	Password string `json:"password"`
 }
 
-
 type Device struct {
 	ID int64 `json:"id"`
 	DeviceToken string `json:"device_token"`
