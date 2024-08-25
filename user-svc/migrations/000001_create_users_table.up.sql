@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS users(
     email Text,
     password Text
 );
+
