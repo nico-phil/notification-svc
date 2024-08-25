@@ -38,5 +38,5 @@ func(a *Adapter) SaveDevice(ctx context.Context, device *domain.Device) error {
 		RETURNING id, user_id
 	`
 	args := []any{device.DeviceType, device.DeviceToken, device.UserID}
-	return a.db.QueryRowContext(ctx, query, args...).Scan(&device.ID, device.UserID)
+	return a.db.QueryRowContext(ctx, query, args...).Scan(&device.ID, &device.UserID)
 }

@@ -23,6 +23,16 @@ func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*u
 
 func(a *Adapter)CreateDevice(ctx context.Context, request *user.CreateDeviceRequest) (*user.CreateDeviceResponse, error){
 
+	newDevice := domain.Device {
+		DeviceToken: request.DeviceToken,
+		DeviceType: request.DeviceType,
+		UserID: request.UserId,
+	}
 
-	return &user.CreateDeviceResponse{}, nil
+	err := a.api.CreateDevice(ctx, &newDevice)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user.CreateDeviceResponse{DeviceToken: newDevice.DeviceToken, DeviceType: newDevice.DeviceType, UserId: newDevice.UserID}, nil
 }
