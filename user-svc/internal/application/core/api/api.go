@@ -40,3 +40,12 @@ func(a *Application) CreateDevice(ctx context.Context, device *domain.Device) er
 	}
 	return nil
 }
+
+func(a *Application) GetUserDevice(ctx context.Context, userId int64)(domain.Device, error){
+	device, err := a.db.GetUserDevice(ctx, userId)
+	if err != nil {
+		return domain.Device{}, err
+	}
+
+	return device, nil
+}

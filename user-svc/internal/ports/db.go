@@ -9,4 +9,5 @@ import (
 type DBPort interface {
 	SaveUser(context.Context, *domain.User) error
 	SaveDevice(context.Context, *domain.Device) error
+	GetUserDevice(context.Context, int64) (domain.Device, error)
 }

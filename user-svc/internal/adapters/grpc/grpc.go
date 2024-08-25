@@ -34,5 +34,14 @@ func(a *Adapter)CreateDevice(ctx context.Context, request *user.CreateDeviceRequ
 		return nil, err
 	}
 
-	return &user.CreateDeviceResponse{DeviceToken: newDevice.DeviceToken, DeviceType: newDevice.DeviceType, UserId: newDevice.UserID}, nil
+	return &user.CreateDeviceResponse{Id: newDevice.ID}, nil
+}
+
+func(a *Adapter) GetUserDevice(ctx context.Context, request *user.GetUserDeviceRequest)(*user.GetUserDeviceResponse, error){
+	device, err := a.api.GetUserDevice(ctx, request.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user.GetUserDeviceResponse{Id: device.ID ,DeviceToken: device.DeviceToken, DeviceType: device.DeviceToken, UserId: device.UserID}, nil
 }
