@@ -20,3 +20,9 @@ func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*u
 	}
 	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname, Email: newUser.Email }, nil
 }
+
+func(a *Adapter)CreateDevice(ctx context.Context, request *user.CreateDeviceRequest) (*user.CreateDeviceResponse, error){
+
+
+	return &user.CreateDeviceResponse{}, nil
+}

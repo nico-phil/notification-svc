@@ -23,11 +23,11 @@ func NewAdapter(dsn string) (*Adapter, error){
 
 func(a *Adapter) SaveUser(ctx context.Context, user *domain.User) error {
 	query := `
-		INSERT INTO devices(firstname, lastname, email, password)
+		INSERT INTO users(firstname, lastname, email, password)
 		VALUES($1, $2, $3, $4)
 		RETURNING id
 	`
-	args := []any{user.Firstname, user.Lastname, user.Email, user.Password}
+	args := []any{user.Firstname, user.Lastname, user.Email, user.HashPassword}
 	return a.db.QueryRowContext(ctx, query, args...).Scan(&user.ID)
 }
 
