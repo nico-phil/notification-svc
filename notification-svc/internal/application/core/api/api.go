@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/nico-phil/notification/internal/application/core/domain"
 	"github.com/nico-phil/notification/internal/ports"
@@ -12,10 +11,11 @@ import (
 type Application struct {
 	producer ports.ProducerPort
 	db ports.DBPort
+	user ports.UserPort
 }
 
-func NewApplication(producer ports.ProducerPort, db ports.DBPort) *Application{
-	return &Application{producer: producer, db: db}
+func NewApplication(producer ports.ProducerPort, db ports.DBPort, user ports.UserPort) *Application{
+	return &Application{producer: producer, db: db, user: user}
 }
 
 func(a *Application) SendNotification(ctx context.Context, notification domain.Notification) error{
@@ -37,25 +37,24 @@ func(a *Application) SendNotification(ctx context.Context, notification domain.N
 }
 
 func(a *Application) SendPushNotification(ctx context.Context, notification domain.Notification) error {
-	device, err := a.db.Get(ctx, notification.UserId)
+	// device, err := a.db.Get(ctx, notification.UserId)
+	_, err := a.user.GetDevice(ctx, notification.UserId)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("devicetype=", device.DeviceType)
-	fmt.Println("device=", device.DeviceType == "ANDROID")
+	// var topic string
 
-	var topic string
+	// if device.DeviceType == "ANDROID" {
+	// 	topic = "ANDROID_QUEUE"
+	// }else{
+	// 	topic = "IOS_QUEUE"
+	// }
 
-	if device.DeviceType == "ANDROID" {
-		topic = "ANDROID_QUEUE"
-	}else{
-		topic = "IOS_QUEUE"
-	}
+	// newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
 
-	newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
-
-	return a.producer.PushMessageToQueue(topic, newPushNotification)
+	// return a.producer.PushMessageToQueue(topic, newPushNotification)
+	return nil
 }
 
 func(a *Application) SendEmailNotification(ctx context.Context, notification domain.Notification) error {

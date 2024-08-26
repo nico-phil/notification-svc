@@ -46,7 +46,7 @@ func(a *Adapter) GetUserDevice(ctx context.Context, userId int64)(domain.Device,
 	var device domain.Device
 	query := `
 		SELECT * FROM devices
-		WHERE id=$1
+		WHERE user_id=$1
 		`
 	args := []any{userId}
 	err := a.db.QueryRowContext(ctx, query, args...).Scan(

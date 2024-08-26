@@ -11,9 +11,10 @@ type Notification struct {
 }
 
 type Device struct{
-	ID int	`json:"id"`
+	ID int64	`json:"id"`
 	DeviceToken string `json:"device_token"`
 	DeviceType string 	`json:"device_type"`
+	UserId int64 `json:"user_id"`
 }
 
 type PushNotification struct {

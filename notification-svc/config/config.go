@@ -13,6 +13,10 @@ func GetDbDSN() string{
 	return getEnvironmentvalue("DSN")
 }
 
+func GetUserServiceUrl() string{
+	return getEnvironmentvalue("USER_SERVICE_URL")
+}
+
 func getEnvironmentvalue(key string) string {
 	v := os.Getenv(key)
 	if v == "" {
