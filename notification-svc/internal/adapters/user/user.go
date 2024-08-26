@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/nico-phil/notification-proto/golang/user"
 	"github.com/nico-phil/notification/internal/application/core/domain"
@@ -30,7 +29,7 @@ func NewAdapter(userServiceUrl string) (*Adapter, error){
 }
 
 func(a *Adapter) GetDevice(ctx context.Context, userId int64)(domain.Device, error){
-	r, err := a.userClient.GetUserDevice(ctx, &user.GetUserDeviceRequest{UserId: userId})
+	r, err := a.userClient.GetDevice(ctx, &user.GetUserDeviceRequest{UserId: userId})
 	if err != nil {
 		return domain.Device{}, err
 	}
@@ -42,6 +41,5 @@ func(a *Adapter) GetDevice(ctx context.Context, userId int64)(domain.Device, err
 		DeviceType: r.DeviceType,
 	}
 
-	fmt.Println("device from clien", r)
 	return device, nil
 }

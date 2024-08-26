@@ -38,23 +38,22 @@ func(a *Application) SendNotification(ctx context.Context, notification domain.N
 
 func(a *Application) SendPushNotification(ctx context.Context, notification domain.Notification) error {
 	// device, err := a.db.Get(ctx, notification.UserId)
-	_, err := a.user.GetDevice(ctx, notification.UserId)
+	device, err := a.user.GetDevice(ctx, notification.UserId)
 	if err != nil {
 		return err
 	}
+	
+	var topic string
 
-	// var topic string
+	if device.DeviceType == "ANDROID" {
+		topic = "ANDROID_QUEUE"
+	}else{
+		topic = "IOS_QUEUE"
+	}
 
-	// if device.DeviceType == "ANDROID" {
-	// 	topic = "ANDROID_QUEUE"
-	// }else{
-	// 	topic = "IOS_QUEUE"
-	// }
+	newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
 
-	// newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
-
-	// return a.producer.PushMessageToQueue(topic, newPushNotification)
-	return nil
+	return a.producer.PushMessageToQueue(topic, newPushNotification)
 }
 
 func(a *Application) SendEmailNotification(ctx context.Context, notification domain.Notification) error {
