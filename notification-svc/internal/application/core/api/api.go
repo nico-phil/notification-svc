@@ -10,12 +10,12 @@ import (
 
 type Application struct {
 	producer ports.ProducerPort
-	db ports.DBPort
+	// db ports.DBPort
 	user ports.UserPort
 }
 
-func NewApplication(producer ports.ProducerPort, db ports.DBPort, user ports.UserPort) *Application{
-	return &Application{producer: producer, db: db, user: user}
+func NewApplication(producer ports.ProducerPort, user ports.UserPort) *Application{
+	return &Application{producer: producer, user: user}
 }
 
 func(a *Application) SendNotification(ctx context.Context, notification domain.Notification) error{
@@ -82,21 +82,6 @@ func(a *Application) SendSMSNotification(ctx context.Context, notification domai
 	}
 	return a.producer.PushMessageToQueueSMS("SMS_QUEUE", smsNotification)
 
-
-}
-
-
-func(a *Application) GetDevice(ctx context.Context, id int64) (domain.Device, error){
-	device, err := a.db.Get(ctx, id)
-	if err != nil {
-		return device, err
-	}
-
-	return device, nil
-}
-
-func(a *Application) SaveDevice(ctx context.Context, device *domain.Device) error {
-	return a.db.Save(ctx, device)
 }
 
 
