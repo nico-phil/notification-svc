@@ -47,6 +47,9 @@ func(a *Adapter) GetUser(ctx context.Context, id int64)(domain.User, error){
 		&user.Password,
 	)
 	if err!= nil {
+		if errors.Is(err, sql.ErrNoRows){
+			return domain.User{}, errors.New("user not found")
+		}
 		return domain.User{}, err
 	}
 	return user, nil
