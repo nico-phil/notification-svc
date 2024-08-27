@@ -8,9 +8,11 @@ import (
 	"github.com/nico-phil/notification/internal/ports"
 )
 
+var userCache map[int64]domain.User = map[int64]domain.User{}
+var deviceCache map[int64] domain.Device = map[int64]domain.Device{}
+
 type Application struct {
 	producer ports.ProducerPort
-	// db ports.DBPort
 	user ports.UserPort
 }
 
@@ -37,8 +39,14 @@ func(a *Application) SendNotification(ctx context.Context, notification domain.N
 }
 
 func(a *Application) SendPushNotification(ctx context.Context, notification domain.Notification) error {
-	// device, err := a.db.Get(ctx, notification.UserId)
-	device, err := a.user.GetDevice(ctx, notification.UserId)
+
+	var err error
+	device, ok := deviceCache[notification.UserId]
+	if !ok {
+		device, err = a.user.GetDevice(ctx, notification.UserId)
+		deviceCache[notification.UserId] = device
+	}
+	
 	if err != nil {
 		return err
 	}
@@ -57,8 +65,13 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 }
 
 func(a *Application) SendEmailNotification(ctx context.Context, notification domain.Notification) error {
+	var err error
+	u, ok := userCache[notification.UserId]
+	if !ok {
+		u, err = a.user.Get(ctx, notification.UserId)
+		userCache[notification.UserId] = u
+	}
 
-	user, err := a.user.Get(ctx, notification.UserId)
 	if err != nil {
 		return err
 	}
@@ -66,7 +79,7 @@ func(a *Application) SendEmailNotification(ctx context.Context, notification dom
 	emailNotification := domain.EmailNotification {
 		Title: notification.Title,
 		Content: notification.Content,
-		Email: user.Email,
+		Email: u.Email,
 	}
 	return a.producer.PushMessageToQueueEmail("EMAIL_QUEUE", emailNotification)
 
