@@ -9,8 +9,8 @@ type User struct {
 	Firstname string `json:"first_name"`
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
-	Password string `json:"password"`
-	HashPassword []byte `json:"HashPassword"`
+	Password string `json:"-"`
+	HashPassword []byte `json:"-"`
 }
 
 type Device struct {

@@ -19,7 +19,7 @@ func NewApplication(db ports.DBPort) *Application{
 	}
 }
 
-func(a *Application) CreateUser(ctx context.Context,  user *domain.User) error {
+func(a *Application) Create(ctx context.Context,  user *domain.User) error {
 
 	err := user.EncriptPassword()
 	if err != nil{
@@ -31,6 +31,14 @@ func(a *Application) CreateUser(ctx context.Context,  user *domain.User) error {
 		return err
 	}
 	return nil
+}
+
+func(a *Application) Get(ctx context.Context, id int64)(domain.User, error) {
+	user, err := a.db.GetUser(ctx, id)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return user, nil
 }
 
 func(a *Application) CreateDevice(ctx context.Context, device *domain.Device) error {

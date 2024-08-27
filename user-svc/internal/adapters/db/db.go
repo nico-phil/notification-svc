@@ -13,6 +13,9 @@ type Adapter struct {
 	db *sql.DB
 }
 
+
+
+
 func NewAdapter(dsn string) (*Adapter, error){
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {
@@ -30,6 +33,26 @@ func(a *Adapter) SaveUser(ctx context.Context, user *domain.User) error {
 	`
 	args := []any{user.Firstname, user.Lastname, user.Email, user.HashPassword}
 	return a.db.QueryRowContext(ctx, query, args...).Scan(&user.ID)
+}
+
+func(a *Adapter) GetUser(ctx context.Context, id int64)(domain.User, error){
+	var user domain.User
+	query := `
+		SELECT * FROM users
+		WHERE id=$1
+		`
+	args := []any{id}
+	err := a.db.QueryRowContext(ctx, query, args...).Scan(
+		&user.ID,
+		&user.Firstname,
+		&user.Lastname,
+		&user.Email,
+		&user.Password,
+	)
+	if err!= nil {
+		return domain.User{}, err
+	}
+	return user, nil
 }
 
 func(a *Adapter) SaveDevice(ctx context.Context, device *domain.Device) error {
@@ -63,3 +86,6 @@ func(a *Adapter) GetUserDevice(ctx context.Context, userId int64)(domain.Device,
 	}
 	return device, nil
 }	
+
+
+

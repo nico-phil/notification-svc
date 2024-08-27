@@ -14,11 +14,24 @@ func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*u
 		Email: request.Email,
 		Password:  request.Password,
 	}
-	err := a.api.CreateUser(ctx, &newUser)
+	err := a.api.Create(ctx, &newUser)
 	if err != nil {
 		return  nil, err
 	}
 	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname, Email: newUser.Email }, nil
+}
+
+func(a *Adapter) Get(ctx context.Context, request *user.GetUserRequest) (*user.GetUserResponse, error){
+	u, err := a.api.Get(ctx, request.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &user.GetUserResponse{
+		Firstname: u.Firstname,
+		Lastname: u.Lastname,
+		Email: u.Email,
+	}, err
 }
 
 func(a *Adapter)CreateDevice(ctx context.Context, request *user.CreateDeviceRequest) (*user.CreateDeviceResponse, error){

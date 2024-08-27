@@ -10,6 +10,8 @@ github.com/nico-phil/notification-proto/golang/user v1.0.4 h1:iNPZ94dzbpGTl8Yh2d
 github.com/nico-phil/notification-proto/golang/user v1.0.4/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
 github.com/nico-phil/notification-proto/golang/user v1.0.5 h1:nmVv0HmJOnkud4+BCUlxeXbYwgrv8bZ3AevWY6TyLt4=
 github.com/nico-phil/notification-proto/golang/user v1.0.5/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
+github.com/nico-phil/notification-proto/golang/user v1.0.6 h1:xHU8uX1KUh7+dU3gt3LJNqaiSuiZmm1fgEq5J0g3YWQ=
+github.com/nico-phil/notification-proto/golang/user v1.0.6/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
 golang.org/x/crypto v0.26.0 h1:RrRspgV4mU+YwB4FYnuBoKsUapNIL5cohGAmSH3azsw=
 golang.org/x/crypto v0.26.0/go.mod h1:GY7jblb9wI+FOo5y8/S2oY4zWP07AkOJ4+jxCqdqn54=
 golang.org/x/net v0.28.0 h1:a9JDOJc5GMUJ0+UDqmLT86WiEy7iWyIhz8gz8E4e5hE=
@@ -20,6 +22,8 @@ golang.org/x/text v0.17.0 h1:XtiM5bkSOt+ewxlOE/aE/AKEHibwj/6gvWMl9Rsh0Qc=
 golang.org/x/text v0.17.0/go.mod h1:BuEKDfySbSR4drPmRPG/7iBdf8hvFMuRexcpahXilzY=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20240823204242-4ba0660f739c h1:Kqjm4WpoWvwhMPcrAczoTyMySQmYa9Wy2iL6Con4zn8=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20240823204242-4ba0660f739c/go.mod h1:UqMtugtsSgubUsoxbuAoiCXvqvErP7Gf0so0mK9tHxU=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7 h1:2035KHhUv+EpyB+hWgJnaWKJOdX1E95w2S8Rr4uWKTs=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7/go.mod h1:UqMtugtsSgubUsoxbuAoiCXvqvErP7Gf0so0mK9tHxU=
 google.golang.org/grpc v1.65.0 h1:bs/cUb4lp1G5iImFFd3u5ixQzweKizoZJAwBNLR42lc=
 google.golang.org/grpc v1.65.0/go.mod h1:WgYC2ypjlB0EiQi6wdKixMqukr6lBc0Vo+oOgjrM5ZQ=
 google.golang.org/protobuf v1.34.2 h1:6xV6lTsCfpGD21XK49h7MhtcApnLqkfYgPcdHftf6hg=
