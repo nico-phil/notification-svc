@@ -13,9 +13,6 @@ type Adapter struct {
 	db *sql.DB
 }
 
-
-
-
 func NewAdapter(dsn string) (*Adapter, error){
 	db, err := sql.Open("postgres", dsn)
 	if err != nil {

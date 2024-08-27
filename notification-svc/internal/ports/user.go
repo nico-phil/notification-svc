@@ -7,5 +7,6 @@ import (
 )
 
 type UserPort interface{
+	Get(context.Context, int64)(domain.User, error)
 	GetDevice(context.Context,  int64) (domain.Device, error)
 }

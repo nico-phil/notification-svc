@@ -43,3 +43,16 @@ func(a *Adapter) GetDevice(ctx context.Context, userId int64)(domain.Device, err
 
 	return device, nil
 }
+
+func(a *Adapter) Get(ctx context.Context, id int64) (domain.User, error){
+	r, err := a.userClient.Get(ctx, &user.GetUserRequest{UserId: id})
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	return domain.User{
+		Firstname: r.Firstname,
+		Lastname: r.Lastname,
+		Email: r.Email,
+	}, nil
+}

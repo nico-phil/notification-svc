@@ -34,6 +34,12 @@ type SMSNotification struct {
 	PhoneNumber string `json:"phone_number"`
 }
 
+type User struct {
+	Firstname string `json:"first_name"`
+	Lastname string `json:"lastname"`
+	Email string `json:"email"`
+}
+
 
 
 func NewNotification(userId int64, title, content, notificationType string ) Notification{

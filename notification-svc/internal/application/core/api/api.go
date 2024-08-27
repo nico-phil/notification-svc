@@ -57,15 +57,18 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 }
 
 func(a *Application) SendEmailNotification(ctx context.Context, notification domain.Notification) error {
-	email := "philibert17@gmail.com"
+
+	user, err := a.user.Get(ctx, notification.UserId)
+	if err != nil {
+		return err
+	}
 
 	emailNotification := domain.EmailNotification {
 		Title: notification.Title,
 		Content: notification.Content,
-		Email: email,
+		Email: user.Email,
 	}
 	return a.producer.PushMessageToQueueEmail("EMAIL_QUEUE", emailNotification)
-
 
 }
 
@@ -77,7 +80,7 @@ func(a *Application) SendSMSNotification(ctx context.Context, notification domai
 		Content: notification.Content,
 		PhoneNumber: phoneNumber,
 	}
-	return a.producer.PushMessageToQueueSMS("EMAIL_QUEUE", smsNotification)
+	return a.producer.PushMessageToQueueSMS("SMS_QUEUE", smsNotification)
 
 
 }
