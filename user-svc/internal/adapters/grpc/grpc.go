@@ -11,8 +11,7 @@ import (
 )
 
 func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*user.CreateUserResponse, error) {
-	
-	//check input
+
 	var validationErrors []*errdetails.BadRequest_FieldViolation
 	if len(request.Email) == 0 {
 		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
@@ -82,6 +81,30 @@ func(a *Adapter) Get(ctx context.Context, request *user.GetUserRequest) (*user.G
 
 func(a *Adapter)CreateDevice(ctx context.Context, request *user.CreateDeviceRequest) (*user.CreateDeviceResponse, error){
 
+	var validationErrors []*errdetails.BadRequest_FieldViolation
+	if len(request.DeviceToken) == 0 {
+		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
+			Field: "device token",
+			Description: "device token should not be empty",
+		})
+	}
+
+
+	if request.DeviceType != "ANDROID" && request.DeviceType != "IOS" {
+		validationErrors = append(validationErrors, &errdetails.BadRequest_FieldViolation{
+			Field: "device type",
+			Description: "device type should be ANDROID OR IOS",
+		})
+	}
+
+	if len(validationErrors) > 0 {
+		st := status.New(codes.InvalidArgument, "invalid request")
+		badRequest := errdetails.BadRequest{}
+		badRequest.FieldViolations = validationErrors
+		st,_ = st.WithDetails(&badRequest)
+		return nil, st.Err()
+	}
+	
 	newDevice := domain.Device {
 		DeviceToken: request.DeviceToken,
 		DeviceType: request.DeviceType,
