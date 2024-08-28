@@ -119,5 +119,27 @@ func Test_CreateDevice_Should_Return_Error_when_Db_Persistent_Fail(t *testing.T)
 	assert.EqualError(t, err, "failed to save device")
 }
 
+func Test_GetUserDevice(t *testing.T){
+	db := new(mockedDB)
+	db.On("GetUserDevice", mock.Anything, mock.Anything).Return(domain.Device{}, nil)
+	
+	application := NewApplication(db)
+	d, err := application.GetUserDevice(context.Background(), 1)
+
+	assert.Nil(t, err)
+	assert.Equal(t, d, domain.Device{})
+
+}
+
+func Test_GetUserDevice_Should_Return_Error_When_Device_Not_Found(t *testing.T){
+	db := new(mockedDB)
+	db.On("GetUserDevice", mock.Anything, mock.Anything).Return(domain.Device{}, errors.New("device not found"))
+	
+	application := NewApplication(db)
+	_, err := application.GetUserDevice(context.Background(), 1)
+
+	assert.EqualError(t, err, "device not found")
+}
+
 
 
