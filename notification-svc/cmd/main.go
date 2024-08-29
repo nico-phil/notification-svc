@@ -17,10 +17,12 @@ func main(){
 	// }
 	// log.Println("succesffuly connect to postgres")
 
-	producerAdapter, err := producer.NewAdapter([]string{"localhost:9092"})
+	producerAdapter, err := producer.NewAdapter([]string{config.GetBrokerUrl()})
 	if err != nil {
 		log.Fatalf("failed to connect to kafka err: %v", err)
 	}
+
+	log.Println("successfully conected to broker")
 	
 	userAdapter, err := user.NewAdapter(config.GetUserServiceUrl())
 	if err != nil {
@@ -29,7 +31,7 @@ func main(){
 	log.Println("successfully conected to user service")
 	application := api.NewApplication(producerAdapter, userAdapter)
 
-	grpcAdapter := grpc.NewAdapter(application, 3000)
+	grpcAdapter := grpc.NewAdapter(application, config.GetAppPort())
 	grpcAdapter.Run()
 
 }

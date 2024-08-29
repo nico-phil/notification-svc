@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/nico-phil/notification_worker/config"
 	"golang.org/x/oauth2/google"
 )
 
@@ -54,7 +55,7 @@ type Notification struct {
 }
 
 func(a *Adapter) SendNotification(title, body, token string) error{
-	url := fmt.Sprintf("https://fcm.googleapis.com/v1/projects/%s/messages:send", os.Getenv("FIREBASE_PROJECT_ID"))
+	url := fmt.Sprintf("https://fcm.googleapis.com/v1/projects/%s/messages:send", config.GetFirebaseProjectId())
 
 	data := MessagePayload {
 		Message: Message{

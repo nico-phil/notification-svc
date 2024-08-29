@@ -16,7 +16,7 @@ type Mail struct {
 
 type Payload struct {
 	From FromTo `json:"from"`
-	To FromTo `json:"to"`
+	To []FromTo `json:"to"`
 	Subject string `json:"subject"`
 	Text string `json:"text"`
 	Html string `json:"html"`
@@ -32,7 +32,7 @@ func(m *Mail) SendRequestToMailSender(subject, text, email string)error {
 
 	payload := Payload {
 		From: FromTo{Email: config.GetDomain()},
-		To: FromTo{Email: config.GetEmail()},
+		To: []FromTo{ {Email: config.GetEmail()}, },
 		Subject: subject,
 		Text: text,
 		Html: text,

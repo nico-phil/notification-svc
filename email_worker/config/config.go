@@ -25,6 +25,10 @@ func GetDbDSN() string{
 	return getEnvironmentvalue("DSN")
 }
 
+func GetBrokerUrl() string {
+	return getEnvironmentvalue("BROKER_URL")
+}
+
 func getEnvironmentvalue(key string) string {
 	v := os.Getenv(key)
 	if v == "" {

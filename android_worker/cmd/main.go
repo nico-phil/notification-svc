@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/nico-phil/notification_worker/config"
 	"github.com/nico-phil/notification_worker/internal/adapters/consumer"
 	"github.com/nico-phil/notification_worker/internal/adapters/fcm"
 )
@@ -16,7 +17,7 @@ func main(){
 		log.Fatalf("failed to generate google cloud patform access token : %v", err)
 	}
 
-	consumerAdapter, err := consumer.NewAdapter(fcmAdapter, []string{"localhost:9092"})
+	consumerAdapter, err := consumer.NewAdapter(fcmAdapter, []string{config.GetBrokerUrl()})
 
 	if err != nil {
 		log.Fatalf("failed to connect to kafka broker err: %v", err)

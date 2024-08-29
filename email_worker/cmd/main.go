@@ -14,7 +14,7 @@ func main() {
 	mail := &mail.Mail{
 		API_TOKEN: config.GetApiToken(),
 	}
-	consumerAdapter, err := consumer.NewAdapter(mail, []string{"localhost:9092"})
+	consumerAdapter, err := consumer.NewAdapter(mail, []string{config.GetBrokerUrl()})
 
 	if err != nil {
 		log.Fatalf("failed to connect to kafka broker err: %v", err)

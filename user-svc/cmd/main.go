@@ -18,7 +18,7 @@ func main(){
 	log.Println("sucessfully connect to posgres")
 	application := api.NewApplication(dbAdapter)
 
-	grpcAdapter := grpc.NewAdapter(application, 3001)
+	grpcAdapter := grpc.NewAdapter(application, config.GetAppPort())
 
 	grpcAdapter.Run()
 }
