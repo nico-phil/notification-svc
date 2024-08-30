@@ -1,7 +1,9 @@
 package main
 
 import (
+	"crypto/tls"
 	"log"
+	"net/http"
 
 	"github.com/nico-phil/email_worker/config"
 	"github.com/nico-phil/email_worker/internal/adapters/consumer"
@@ -11,8 +13,10 @@ import (
 
 
 func main() {
+	tr := &http.Transport {TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	mail := &mail.Mail{
 		API_TOKEN: config.GetApiToken(),
+		Client: &http.Client{Transport: tr},
 	}
 	consumerAdapter, err := consumer.NewAdapter(mail, []string{config.GetBrokerUrl()})
 

@@ -3,34 +3,50 @@ package fcm
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 
 	"github.com/nico-phil/notification_worker/config"
+	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
 
 type Adapter struct {
 	AccessToken string
-	Client http.Client
+	Client *http.Client
 }
 
 func(a *Adapter) GenerateToken() error {
 	
-	serviceAccountFile := "./notification-6b719-firebase-adminsdk-r6d81-e1e692321c.json"
+	serviceAccountFile := "/usr/src/app/notification-6b719-firebase-adminsdk-r6d81-e1e692321c.json"
 
 	data, err := os.ReadFile(serviceAccountFile)
 	if err != nil {
 		return err
 	}
 
-	creds, err := google.CredentialsFromJSON(context.Background(), data, "https://www.googleapis.com/auth/cloud-platform")
+	tlsConfig := &tls.Config{InsecureSkipVerify: true}
+	transport := &http.Transport{TLSClientConfig: tlsConfig}
+	customClient := &http.Client{Transport: transport}
+
+
+	// creds, err := google.CredentialsFromJSON(context.Background(), data, "https://www.googleapis.com/auth/cloud-platform", option.WithHTTPClient(httpClient))
+	// if err != nil {
+	// 	return err
+	// }
+
+	config, err := google.JWTConfigFromJSON(data, "https://www.googleapis.com/auth/cloud-platform")
 	if err != nil {
 		return err
 	}
-	token, err := creds.TokenSource.Token()
+
+	ctx := context.WithValue(context.Background(), oauth2.HTTPClient, customClient)
+	tokenSource := config.TokenSource(ctx)
+
+	token, err := tokenSource.Token()
 	if err != nil {
 		return err
 	}

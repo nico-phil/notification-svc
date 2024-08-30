@@ -44,9 +44,9 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: users
+      POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${NOTIFICATION_POSTGRES_DB}
     networks:
       - kafka-net
     # # volumes:
@@ -62,10 +62,58 @@ services:
     ports:
       - "3000:3000"
     environment:
-      ENV: development
-      USER_SERVICE_URL: http://users:3001
-      BROKER_URL: kafka:29092 # Connect to Kafka using the internal listener
-      APP_PORT: 3000
+      ENV: ${NOTIFICATION_ENV}
+      USER_SERVICE_URL: ${NOTIFICATION_USER_SERVICE_URL}
+      BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
+      APP_PORT: ${NOTIFICATION_APP_PORT}
+    networks:
+      - kafka-net
+
+  user_svc:
+    build:
+      context: ./user-svc
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+        # condition: service_healthy
+    ports:
+      - "3001:3001"
+    environment:
+      ENV: ${NOTIFICATION_ENV}
+      DSN: ${NOTIFICATION_DSN_USERS}
+      APP_PORT: ${NOTIFICATION_APP_PORT_USERS}
+    networks:
+      - kafka-net
+
+  android_worker:
+    build:
+      context: ./android_worker
+      dockerfile: Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      ENV: ${NOTIFICATION_ENV}
+      FIREBASE_PROJECT_ID: ${NOTIFICATION_FIREBASE_PROJECT_ID}
+      BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
+    networks:
+      - kafka-net
+    volumes:
+      - ${NOTIFICATION_FIREBASE_CREADENTIAL_VOLUME}:${NOTIFICATION_FIREBASE_CREATIALS_VOLUME_IN_DOCKER}
+
+  email_worker:
+    build:
+      context: ./email_worker
+      dockerfile: Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      ENV: ${NOTIFICATION_ENV}
+      API_TOKEN: ${NOTIFICATION_API_TOKEN}
+      DOMAIN: ${NOTIFICATION_DOMAIN}
+      EMAIL: nphilibert17@gmail.com
+      BROKER_URL: ${NOTIFICATION_BROKER_URL}
     networks:
       - kafka-net
 

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"crypto/tls"
 	"log"
+	"net/http"
 
 	"github.com/nico-phil/notification_worker/config"
 	"github.com/nico-phil/notification_worker/internal/adapters/consumer"
@@ -10,7 +12,9 @@ import (
 
 func main(){
 
-	fcmAdapter := &fcm.Adapter{}
+	tr := &http.Transport {TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
+
+	fcmAdapter := &fcm.Adapter{ Client: &http.Client{Transport: tr}}
 
 	err := fcmAdapter.GenerateToken()
 	if err != nil {

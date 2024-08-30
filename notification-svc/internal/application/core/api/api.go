@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/nico-phil/notification/internal/application/core/domain"
 	"github.com/nico-phil/notification/internal/ports"
@@ -53,11 +54,23 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 	
 	var topic string
 
-	if device.DeviceType == "ANDROID" {
+	fmt.Println("device", device)
+
+	switch {
+	case device.DeviceType == "ANDROID":
 		topic = "ANDROID_QUEUE"
-	}else{
+	case device.DeviceType == "IOS":
 		topic = "IOS_QUEUE"
+	default:
+		topic = "ANDROID_QUEUE"
+		// return fmt.Errorf("unsupported device type: %s", device.DeviceType)
 	}
+
+	// if device.DeviceType == "ANDROID" {
+	// 	topic = "ANDROID_QUEUE"
+	// }else{
+	// 	topic = "IOS_QUEUE"
+	// }
 
 	newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
 

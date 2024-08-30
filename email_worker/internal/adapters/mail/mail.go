@@ -11,7 +11,7 @@ import (
 
 type Mail struct {
 	API_TOKEN string
-	Client http.Client
+	Client *http.Client
 }
 
 type Payload struct {
