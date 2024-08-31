@@ -38,6 +38,7 @@ type User struct {
 	Firstname string `json:"first_name"`
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
+	PhoneNumber string `json:"phone_number"`
 }
 
 
