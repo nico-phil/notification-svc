@@ -1,5 +1,5 @@
 package ports
 
 type SMSPORT interface {
-	 sendSSMNotification()
+	SendSMSNotification(body, from, to string) error
 }

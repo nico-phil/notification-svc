@@ -21,21 +21,21 @@ type Message struct {
 	To string
 }
 
-func(a *Adapter) SendSMSNotification(message Message) error{
+func(a *Adapter) SendSMSNotification(body, from, to string) error{ 
 	sms_url := fmt.Sprintf("https://api.twilio.com/2010-04-01/Accounts/%s/Messages.json", config.GetTwiolioAccountSID())
 
 	if config.GetEnv() == "development" {
-		message.From = config.GetFrom()
-		message.To = config.GetTO()
+		from = config.GetFrom()
+		to = config.GetTO()
 	}
 
 	form := url.Values{}
-	form.Add("Body", message.Body)
-	form.Add("From", message.From)
-	form.Add("To", message.To) 
+	form.Add("Body", body)
+	form.Add("From", from)
+	form.Add("To", to) 
 
-	body := strings.NewReader(form.Encode())
-	req, err := http.NewRequest("POST", sms_url, body)
+	bodyReader := strings.NewReader(form.Encode())
+	req, err := http.NewRequest("POST", sms_url, bodyReader)
 	if err != nil {
 		return err
 	}

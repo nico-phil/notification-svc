@@ -25,6 +25,10 @@ func GetTwilioAuthtoken() string {
 	return getEnvironmentValue("TWILIO_AUTH_TOKEN")
 }
 
+func GetBrokerUrl() string {
+	return getEnvironmentValue("BROKER_URL")
+}
+
 
 
 func getEnvironmentValue(key string) string {
