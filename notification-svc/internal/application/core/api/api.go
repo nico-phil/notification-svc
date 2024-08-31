@@ -29,14 +29,11 @@ func(a *Application) SendNotification(ctx context.Context, notification domain.N
 	case notification.NotificationType == "EMAIL":
 		return a.SendEmailNotification(ctx, notification)
 	case notification.NotificationType == "SMS": 
-
+		return a.SendSMSNotification(ctx, notification)
 	default: 
 		return errors.New("unknown notification type")
 	
 	}
-
-	return nil
-	
 }
 
 func(a *Application) SendPushNotification(ctx context.Context, notification domain.Notification) error {
@@ -66,12 +63,6 @@ func(a *Application) SendPushNotification(ctx context.Context, notification doma
 		// return fmt.Errorf("unsupported device type: %s", device.DeviceType)
 	}
 
-	// if device.DeviceType == "ANDROID" {
-	// 	topic = "ANDROID_QUEUE"
-	// }else{
-	// 	topic = "IOS_QUEUE"
-	// }
-
 	newPushNotification := domain.NewPushNotification(notification.Title, notification.Content, device)
 
 	return a.producer.PushMessageToQueue(topic, newPushNotification)
@@ -99,7 +90,18 @@ func(a *Application) SendEmailNotification(ctx context.Context, notification dom
 }
 
 func(a *Application) SendSMSNotification(ctx context.Context, notification domain.Notification) error {
-	phoneNumber := "+1234566778"
+	phoneNumber := "+79772820353"
+
+	var err error
+	u, ok := userCache[notification.UserId]
+	if !ok {
+		u, err = a.user.Get(ctx, notification.UserId)
+		userCache[notification.UserId] = u
+	}
+
+	if err != nil {
+		return err
+	}
 
 	smsNotification := domain.SMSNotification {
 		Title: notification.Title,
