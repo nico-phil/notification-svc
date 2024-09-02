@@ -24,11 +24,11 @@ func NewAdapter(dsn string) (*Adapter, error){
 
 func(a *Adapter) SaveUser(ctx context.Context, user *domain.User) error {
 	query := `
-		INSERT INTO users(firstname, lastname, email, password)
-		VALUES($1, $2, $3, $4)
+		INSERT INTO users(firstname, lastname, email, phone_number, password)
+		VALUES($1, $2, $3, $4, $5)
 		RETURNING id
 	`
-	args := []any{user.Firstname, user.Lastname, user.Email, user.HashPassword}
+	args := []any{user.Firstname, user.Lastname, user.Email, user.PhoneNumber, user.HashPassword}
 	return a.db.QueryRowContext(ctx, query, args...).Scan(&user.ID)
 }
 
@@ -45,6 +45,7 @@ func(a *Adapter) GetUser(ctx context.Context, id int64)(domain.User, error){
 		&user.Lastname,
 		&user.Email,
 		&user.Password,
+		&user.PhoneNumber,
 	)
 	if err!= nil {
 		if errors.Is(err, sql.ErrNoRows){
