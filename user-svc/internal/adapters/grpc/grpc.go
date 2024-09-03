@@ -54,13 +54,15 @@ func(a *Adapter)Create(ctx context.Context, request *user.CreateUserRequest) (*u
 		Firstname: request.Firstname,
 		Lastname: request.Lastname,
 		Email: request.Email,
+		PhoneNumber: request.PhoneNumber,
 		Password:  request.Password,
 	}
+	
 	err := a.api.Create(ctx, &newUser)
 	if err != nil {
 		return  nil, err
 	}
-	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname, Email: newUser.Email }, nil
+	return &user.CreateUserResponse{Firstname: newUser.Firstname, Lastname: newUser.Lastname, Email: newUser.Email, PhoneNumber: newUser.PhoneNumber }, nil
 }
 
 func(a *Adapter) Get(ctx context.Context, request *user.GetUserRequest) (*user.GetUserResponse, error){
@@ -76,6 +78,7 @@ func(a *Adapter) Get(ctx context.Context, request *user.GetUserRequest) (*user.G
 		Firstname: u.Firstname,
 		Lastname: u.Lastname,
 		Email: u.Email,
+		PhoneNumber: u.PhoneNumber,
 	}, err
 }
 

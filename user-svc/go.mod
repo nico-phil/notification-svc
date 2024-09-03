@@ -4,11 +4,11 @@ go 1.22.2
 
 require (
 	github.com/lib/pq v1.10.9
-	github.com/nico-phil/notification-proto/golang/user v1.0.6
+	github.com/nico-phil/notification-proto/golang/user v1.0.8
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/crypto v0.26.0
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7
-	google.golang.org/grpc v1.65.0
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240827150818-7e3bb234dfed
+	google.golang.org/grpc v1.66.0
 )
 
 require (
