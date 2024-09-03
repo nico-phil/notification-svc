@@ -5,7 +5,7 @@ go 1.22.2
 require (
 	github.com/IBM/sarama v1.43.3
 	github.com/nico-phil/notification-proto/golang/notification/v2 v2.0.5
-	github.com/nico-phil/notification-proto/golang/user v1.0.7
+	github.com/nico-phil/notification-proto/golang/user v1.0.8
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240827150818-7e3bb234dfed
 	google.golang.org/grpc v1.66.0

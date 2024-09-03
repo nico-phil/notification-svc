@@ -90,8 +90,7 @@ func(a *Application) SendEmailNotification(ctx context.Context, notification dom
 }
 
 func(a *Application) SendSMSNotification(ctx context.Context, notification domain.Notification) error {
-	phoneNumber := "+79772820353"
-
+	
 	var err error
 	u, ok := userCache[notification.UserId]
 	if !ok {
@@ -106,7 +105,7 @@ func(a *Application) SendSMSNotification(ctx context.Context, notification domai
 	smsNotification := domain.SMSNotification {
 		Title: notification.Title,
 		Content: notification.Content,
-		PhoneNumber: phoneNumber,
+		PhoneNumber: u.PhoneNumber,
 	}
 	return a.producer.PushMessageToQueueSMS("SMS_QUEUE", smsNotification)
 

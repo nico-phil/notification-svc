@@ -48,6 +48,8 @@ github.com/nico-phil/notification-proto/golang/notification/v2 v2.0.5 h1:tA9EpA9
 github.com/nico-phil/notification-proto/golang/notification/v2 v2.0.5/go.mod h1:JVnROAeYLMX38qomvs4+HY2lHFEigF9sKLRhofgz6og=
 github.com/nico-phil/notification-proto/golang/user v1.0.7 h1:JHj1l4pUOYcV5hEzXeZ4S5EieEFF+GMtoWiil/xEs6c=
 github.com/nico-phil/notification-proto/golang/user v1.0.7/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
+github.com/nico-phil/notification-proto/golang/user v1.0.8 h1:c8xIAds20BjRlRVvQAlcZTQnXAhOgtlbGHYOCZ/2ync=
+github.com/nico-phil/notification-proto/golang/user v1.0.8/go.mod h1:zhUEAMPrkidKD0g0sHKfgnRbt+IubuR+LYl/K5Zj1DY=
 github.com/pierrec/lz4/v4 v4.1.21 h1:yOVMLb6qSIDP67pl/5F7RepeKYu/VmTyEXvuMI5d9mQ=
 github.com/pierrec/lz4/v4 v4.1.21/go.mod h1:gZWDp/Ze/IJXGXf23ltt2EXimqmTUXEy0GFuRQyBid4=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

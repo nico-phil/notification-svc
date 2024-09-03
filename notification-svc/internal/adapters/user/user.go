@@ -54,6 +54,6 @@ func(a *Adapter) Get(ctx context.Context, id int64) (domain.User, error){
 		Firstname: r.Firstname,
 		Lastname: r.Lastname,
 		Email: r.Email,
-		PhoneNumber: "",
+		PhoneNumber: r.PhoneNumber,
 	}, nil
 }
