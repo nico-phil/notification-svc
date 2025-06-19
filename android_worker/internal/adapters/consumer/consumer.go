@@ -45,6 +45,7 @@ func NewAdapter(fcmPort ports.FCMPort, brokers []string) (*Adapter, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	
 	return &Adapter{consumer: consumer, Topic: "ANDROID_QUEUE", FCM: fcmPort }, nil
 }

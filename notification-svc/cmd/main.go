@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/nico-phil/notification/config"
@@ -19,7 +20,8 @@ func main(){
 
 	producerAdapter, err := producer.NewAdapter([]string{config.GetBrokerUrl()})
 	if err != nil {
-		log.Fatalf("failed to connect to kafka err: %v", err)
+		fmt.Printf("failed to connect to kafka err: %v", err)
+		// log.Fatalf("failed to connect to kafka err: %v", err)
 	}
 
 	log.Println("successfully conected to broker")

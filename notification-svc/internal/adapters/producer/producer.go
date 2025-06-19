@@ -18,11 +18,14 @@ func NewAdapter(brokers []string) (*Adapter, error){
 	config.Producer.Return.Successes = true
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Retry.Max = 5
+	config.Producer.RequiredAcks = 1
+	
 
 	producer, err := sarama.NewSyncProducer(brokers, config)
 	if err != nil {
 		return nil, err
 	}
+
 	return &Adapter{producer: producer}, nil
 }
 
@@ -30,14 +33,9 @@ func (a *Adapter) PushMessageToQueue(topic string, message domain.PushNotificati
 	msg := &sarama.ProducerMessage{
 		Topic: topic,
 		Value: message,
+		
 	}
 
-	// defer func(){
-	// 	err :=  a.producer.Close()
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }()
 
 	partition, offset, err:= a.producer.SendMessage(msg)
 	if err != nil {
@@ -54,13 +52,6 @@ func (a *Adapter) PushMessageToQueueEmail(topic string, message domain.EmailNoti
 		Topic: topic,
 		Value: message,
 	}
-
-	// defer func(){
-	// 	err :=  a.producer.Close()
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }()
 
 	partition, offset, err:= a.producer.SendMessage(msg)
 	if err != nil {
@@ -79,13 +70,6 @@ func (a *Adapter) PushMessageToQueueSMS(topic string, message domain.SMSNotifica
 		Value: message,
 	}
 
-	// defer func(){
-	// 	err :=  a.producer.Close()
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }()
-
 	partition, offset, err:= a.producer.SendMessage(msg)
 	if err != nil {
 		return err
@@ -95,4 +79,6 @@ func (a *Adapter) PushMessageToQueueSMS(topic string, message domain.SMSNotifica
 
 	return nil
 }
+
+
 

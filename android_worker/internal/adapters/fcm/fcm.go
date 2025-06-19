@@ -33,11 +33,6 @@ func(a *Adapter) GenerateToken() error {
 	customClient := &http.Client{Transport: transport}
 
 
-	// creds, err := google.CredentialsFromJSON(context.Background(), data, "https://www.googleapis.com/auth/cloud-platform", option.WithHTTPClient(httpClient))
-	// if err != nil {
-	// 	return err
-	// }
-
 	config, err := google.JWTConfigFromJSON(data, "https://www.googleapis.com/auth/cloud-platform")
 	if err != nil {
 		return err
