@@ -30,11 +30,12 @@ func NewAdapter(mailPort ports.MailPort, brokers []string) (*Adapter, error) {
 	config := sarama.NewConfig()
 	config.Consumer.Return.Errors = true
 
+
 	consumer, err := sarama.NewConsumer(brokers, config)
+
 	if err != nil {
 		return nil, err
 	}
-	
 	return &Adapter{consumer: consumer, Topic: "EMAIL_QUEUE", Mail: mailPort }, nil
 }
 
@@ -68,7 +69,6 @@ func(a Adapter) ConsumeMessageFromQueue(){
 				msgCnt++
 				fmt.Printf("Received message Count %d: | Topic(%s) \n", msgCnt, string(msg.Topic))
 				a.ProcessMessage(msg)
-				
 			case <-signals:
 				fmt.Println("Interrupt is detected")
 				doneCh <- struct{}{}

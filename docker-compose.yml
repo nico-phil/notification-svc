@@ -49,73 +49,71 @@ services:
       POSTGRES_DB: ${NOTIFICATION_POSTGRES_DB}
     networks:
       - kafka-net
-    # # volumes:
-    # - da./db-data/postgres/:/var/lib/postgresql/ta/
 
-  notification_svc:
-    build:
-      context: ./notification-svc
-      dockerfile: Dockerfile
-    depends_on:
-      kafka:
-        condition: service_healthy
-    ports:
-      - "3000:3000"
-    environment:
-      ENV: ${NOTIFICATION_ENV}
-      USER_SERVICE_URL: ${NOTIFICATION_USER_SERVICE_URL}
-      BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
-      APP_PORT: ${NOTIFICATION_APP_PORT}
-    networks:
-      - kafka-net
+  # notification_svc:
+  #   build:
+  #     context: ./notification-svc
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     ENV: ${NOTIFICATION_ENV}
+  #     USER_SERVICE_URL: ${NOTIFICATION_USER_SERVICE_URL}
+  #     BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
+  #     APP_PORT: ${NOTIFICATION_APP_PORT}
+  #   networks:
+  #     - kafka-net
 
-  user_svc:
-    build:
-      context: ./user-svc
-      dockerfile: Dockerfile
-    depends_on:
-      - postgres
-        # condition: service_healthy
-    ports:
-      - "3001:3001"
-    environment:
-      ENV: ${NOTIFICATION_ENV}
-      DSN: ${NOTIFICATION_DSN_USERS}
-      APP_PORT: ${NOTIFICATION_APP_PORT_USERS}
-    networks:
-      - kafka-net
+  # user_svc:
+  #   build:
+  #     context: ./user-svc
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - postgres
+  #       # condition: service_healthy
+  #   ports:
+  #     - "3001:3001"
+  #   environment:
+  #     ENV: ${NOTIFICATION_ENV}
+  #     DSN: ${NOTIFICATION_DSN_USERS}
+  #     APP_PORT: ${NOTIFICATION_APP_PORT_USERS}
+  #   networks:
+  #     - kafka-net
 
-  android_worker:
-    build:
-      context: ./android_worker
-      dockerfile: Dockerfile
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      ENV: ${NOTIFICATION_ENV}
-      FIREBASE_PROJECT_ID: ${NOTIFICATION_FIREBASE_PROJECT_ID}
-      BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
-    networks:
-      - kafka-net
-    volumes:
-      - ${NOTIFICATION_FIREBASE_CREADENTIAL_VOLUME}:${NOTIFICATION_FIREBASE_CREATIALS_VOLUME_IN_DOCKER}
+  # android_worker:
+  #   build:
+  #     context: ./android_worker
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   environment:
+  #     ENV: ${NOTIFICATION_ENV}
+  #     FIREBASE_PROJECT_ID: ${NOTIFICATION_FIREBASE_PROJECT_ID}
+  #     BROKER_URL: ${NOTIFICATION_BROKER_URL} # Connect to Kafka using the internal listener
+  #   networks:
+  #     - kafka-net
+  #   volumes:
+  #     - ${NOTIFICATION_FIREBASE_CREADENTIAL_VOLUME}:${NOTIFICATION_FIREBASE_CREATIALS_VOLUME_IN_DOCKER}
 
-  email_worker:
-    build:
-      context: ./email_worker
-      dockerfile: Dockerfile
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      ENV: ${NOTIFICATION_ENV}
-      API_TOKEN: ${NOTIFICATION_API_TOKEN}
-      DOMAIN: ${NOTIFICATION_DOMAIN}
-      EMAIL: nphilibert17@gmail.com
-      BROKER_URL: ${NOTIFICATION_BROKER_URL}
-    networks:
-      - kafka-net
+  # email_worker:
+  #   build:
+  #     context: ./email_worker
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     kafka:
+  #       condition: service_healthy
+  #   environment:
+  #     ENV: ${NOTIFICATION_ENV}
+  #     API_TOKEN: ${NOTIFICATION_API_TOKEN}
+  #     DOMAIN: ${NOTIFICATION_DOMAIN}
+  #     EMAIL: nphilibert17@gmail.com
+  #     BROKER_URL: ${NOTIFICATION_BROKER_URL}
+  #   networks:
+  #     - kafka-net
 
 networks:
   kafka-net:
