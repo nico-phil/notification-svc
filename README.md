@@ -12,3 +12,6 @@ This system handles large-scale notification delivery using a combination of mod
 - **Kubernetes** – for orchestration and deployment at scale
 - **Web Push API** – for browser-based push notifications
 - **Email & SMS Provider APIs** – for external communication delivery (e.g., SendGrid, Twilio)
+
+
+![System Architecture](assets/architecture.png)
